@@ -13,17 +13,16 @@ public class KnightBoard{
           if(board[i][j]<10)ans += "_"+board[i][j];
           else ans+=board[i][j];
         }
-      }
-    } return ans;
-  }
+      }return ans;
+    }
 
-  private boolean solveH(int row, int col, int level){
+
+  private boolean solveH(int row, int col, int level) throws IllegalArgumentException{
     //level is the move number of the knight
     if(level == board.length * board[0].length - 1) return true;
-    if()
+   if(row <= 0 || col<= 0) throw new IllegalArgumentException();
+    return false;
   }
-
-
 
 
 }
