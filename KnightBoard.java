@@ -26,7 +26,11 @@ public class KnightBoard{
 
    //make sure the move is valid, then move the knight there and continue
    board[row][col] = level;
-    return solveH(row + 2, col + 1, level + 1)
+    return (solveH(row + 2, col + 1, level + 1)||solveH(row + 2, col - 1, level + 1)
+    || solveH(row - 2, col + 1, level + 1)||solveH(row - 2, col - 1, level + 1) ||
+    solveH(row + 1, col + 2, level + 1)||solveH(row + 1, col - 2, level + 1)
+    || solveH(row - 1, col + 2, level + 1)||solveH(row - 1, col - 2, level + 1));
+    //^^ trying all the possible knight moves
 
   }
 
