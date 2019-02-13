@@ -21,7 +21,13 @@ public class KnightBoard{
     //level is the move number of the knight
     if(level == board.length * board[0].length - 1) return true;
    if(row <= 0 || col<= 0) throw new IllegalArgumentException();
-    return false;
+   if(row >= board.length || col >= board[0].length)return false;
+   if(board[row][col] > 0) return false;
+
+   //make sure the move is valid, then move the knight there and continue
+   board[row][col] = level;
+    return solveH(row + 2, col + 1, level + 1)
+
   }
 
 
