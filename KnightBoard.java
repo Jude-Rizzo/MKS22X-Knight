@@ -55,10 +55,28 @@ public class KnightBoard{
     return solveH(row, col, 1);
   }
 
-  public static void main(String[] args){
-    KnightBoard k = new KnightBoard(5,5);
-    k.solve(0,0);
-    System.out.println(k);
+  public int countSolutions(int row, int column)throws IllegalStateException, IllegalArgumentException{
+    if(!checkBoard())
+    throw new IllegalStateException("Board is messed up");
+
   }
+
+  public boolean checkBoard(){
+    for(int i = 0; i < board.length; i++){
+      for(int k = 0; j < board.length; j++){
+        if(board[i][j] != 0)
+        return false;
+      }
+    }
+    return true;  
+  }
+}
+
+public static void main(String[] args){
+  KnightBoard k = new KnightBoard(6,10);
+  k.solve(0,0);
+  System.out.println(k);
+}
+
 
 }
