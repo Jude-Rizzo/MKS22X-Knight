@@ -10,17 +10,17 @@ public class KnightBoard{
     for(int i = 0; i < board.length; i++){
       ans += "\n";
       for(int j = 0; j < board.length; j++){
-          if(board[i][j]<10)ans += "_"+board[i][j];
-          else ans+=board[i][j];
+          if(board[i][j]<10)ans += "_"+board[i][j] + "  ";
+          else ans+=board[i][j] + "  ";
         }
       }return ans;
     }
 
 
-  private boolean solveH(int row, int col, int level) throws IllegalArgumentException{
+  private boolean solveH(int row, int col, int level){
     //level is the move number of the knight
     if(level == board.length * board[0].length - 1) return true;
-   if(row <= 0 || col<= 0) throw new IllegalArgumentException();
+   if(row < 0 || col< 0) return false;
    if(row >= board.length || col >= board[0].length)return false;
    if(board[row][col] > 0) return false;
 
@@ -34,5 +34,15 @@ public class KnightBoard{
 
   }
 
+  public boolean solve(int row, int col) throws IllegalArgumentException{
+    if(row < 0 || col < 0)throw new IllegalArgumentException();
+    return solveH(row, col, 1);
+  }
+
+  public static void main(String[] args){
+    KnightBoard k = new KnightBoard(8,8);
+    k.solve(0,0);
+    System.out.println(k);
+  }
 
 }
