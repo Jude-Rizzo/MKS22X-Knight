@@ -19,7 +19,7 @@ public class KnightBoard{
 
   private boolean solveH(int row, int col, int level){
     //level is the move number of the knight
-    if(level == board.length * board[0].length - 1){
+    if(level == board.length * board[0].length + 1){
 
       return true;
     }
