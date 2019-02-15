@@ -5,6 +5,8 @@ public class KnightBoard{
     else board = new int[startingRows][startingCols];
   }
 
+  public static int[] moves = {1,2,1,-2,-1,2,-1,-2,2,1,2,-1,-2,1,-2,-1};
+
   public String toString(){
     String ans = "";
     for(int i = 0; i < board.length; i++){
@@ -35,13 +37,10 @@ public class KnightBoard{
 
     //make sure the move is valid, then move the knight there and continue
     board[row][col] = level;
-    boolean ans = (solveH(row + 2, col + 1, level + 1)||solveH(row + 2, col - 1, level + 1)
-
-    || solveH(row - 2, col + 1, level + 1)||solveH(row - 2, col - 1, level + 1) ||
-
-    solveH(row + 1, col + 2, level + 1)||solveH(row + 1, col - 2, level + 1)
-
-    || solveH(row - 1, col + 2, level + 1)||solveH(row - 1, col - 2, level + 1));
+    boolean ans = false;
+    for(int m = 0; m < moves.length-1; m+=2){
+      ans = ans || solveH(moves[m], moves[m+1], level+1);
+    }
     //^^ trying all the possible knight moves
     if(!ans)
     board[row][col] = 0;
@@ -58,19 +57,19 @@ public class KnightBoard{
   public int countSolutions(int row, int column)throws IllegalStateException, IllegalArgumentException{
     if(!checkBoard())
     throw new IllegalStateException("Board is messed up");
-
+    return 1;
   }
 
   public boolean checkBoard(){
     for(int i = 0; i < board.length; i++){
-      for(int k = 0; j < board.length; j++){
+      for(int j = 0; j < board.length; j++){
         if(board[i][j] != 0)
         return false;
       }
     }
-    return true;  
+    return true;
   }
-}
+
 
 public static void main(String[] args){
   KnightBoard k = new KnightBoard(6,10);
