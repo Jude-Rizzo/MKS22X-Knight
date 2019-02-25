@@ -55,8 +55,19 @@ public class KnightBoard{
   }
 
   public int countSolutions(int row, int column)throws IllegalStateException, IllegalArgumentException{
-    if(!checkBoard())
-    throw new IllegalStateException("Board is messed up");
+    if(!checkBoard()){
+      throw new IllegalStateException("Clear the Board");
+    }
+    if(row < 0 || col < 0 || row >= board.length || col > board[0].length)
+      throw new IllegalArgumentException();
+    countH(row, column, 0);
+
+
+
+  }
+
+  public static int countH(int row, int column, int level){
+    if(level > board.length * board[0].length)
     return 1;
   }
 
