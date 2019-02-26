@@ -59,7 +59,7 @@ public class KnightBoard{
       throw new IllegalStateException("Clear the Board");
     }
     if(row < 0 || column < 0 || row >= board.length || column > board[0].length)
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("No");
     return countH(row, column, 0);
 
 
@@ -75,17 +75,26 @@ public class KnightBoard{
                         board[row][col] = level;
                         return countH(row, col, level + 1);
                 }
-                
+                int X;
+                int Y;
                 for (int i = 0; i < 4; i++) {
-                        int X = row + moves[2*i];
-                        int Y = col + moves[2*i + 1];
+
+                        X = row + moves[2*i];
+                        System.out.println(X);
+                        Y = col + moves[2*i + 1];
+                        System.out.println(Y);
+                        if ((X >= 0) && (X < board.length) && (Y >= 0) && (Y < board[0].length) && (board[X][Y] == 0)){
                         board[X][Y] = level;
-                        count += countH(newX, newY, level + 1);
-                        board[newX][newY] = 0;
+                        count += countH(X, Y, level + 1);
+                        board[X][Y] = 0;
+                      }
 
                 }
                 return count;
         }
+
+
+
 
 
   public boolean checkBoard(){
