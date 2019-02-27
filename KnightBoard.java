@@ -50,45 +50,37 @@ public class KnightBoard{
     return solveH(row, col, 1);
   }
 
-  public int countSolutions(int row, int column)throws IllegalStateException, IllegalArgumentException{
-    clear();
-    if(!checkBoard()){
-      throw new IllegalStateException("Clear the Board");
-    }
-    if(row < 0 || column < 0 || row >= board.length || column > board[0].length)
-      throw new IllegalArgumentException("No");
-    return countH(row, column, 1);
+  public int countSolutions(int r, int c) {
+                //make board valied
+                clear();
+                return countH(r, c, 1);
+        }
 
+        private int countH(int row, int col, int level) {
+                int count = 0;
 
-  }
+              //checks last one
+                if (level == board.length * board[0].length + 1) {
+                        count++;
+                }
+                //start off the count
+                if (level == 1) {
+                        board[row][col] = level;
+                        return countH(row, col, level + 1);
+                }
+                //do all possible moves, add them all together
+                for (int i = 0; i < 8; i++) {
+                        int r = row + moves[i][0];
+                        int c = col + moves[i][1];
+                        if (checker(r, c)) {
+                                board[r][c] = level;
+                                count += countH(r, c, level + 1);
+                                board[r][c] = 0;
+                        }
+                }
+                return count;
+        }
 
-
-
-
-  private int countH(int row, int col, int level) {
-
-    int count = 0;
-    if(level == board.length * board[0].length){
-      count += 1;
-    }
-    if (level == 1){
-                board[row][col] = level;
-                return countH(row, col, level + 1);
-    }
-
-    for(int i = 0; i < moves.length - 1; i+=1){
-      //before we move just check all the conditions
-      int r = row + moves[i][0];
-      int c = col + moves[i][1];
-      if(checker(r,c)){
-      board[r][c] = level;
-      count += countH(r, c, level + 1);
-      board[r][c] = 0;
-    }
-
-    }
-    return count;
-  }
 
 
 
@@ -115,12 +107,42 @@ private boolean checker(int row, int col) {
 
   }
 
+  public static void runTest(int i){
+
+    KnightBoard b;
+    int[]m =   {4,5,5,5,5};
+    int[]n =   {4,5,4,5,5};
+    int[]startx = {0,0,0,1,2};
+    int[]starty = {0,0,0,1,2};
+    int[]answers = {0,304,32,56,64};
+    if(i >= 0 ){
+      try{
+        int correct = answers[i];
+        b = new KnightBoard(m[i%m.length],n[i%m.length]);
+
+        int ans  = b.countSolutions(startx[i],starty[i]);
+
+        if(correct==ans){
+          System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
+        }else{
+          System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
+        }
+      }catch(Exception e){
+        System.out.println("FAIL Exception case: "+i);
+
+      }
+    }
+  }
+
 
 public static void main(String[] args){
-  KnightBoard k = new KnightBoard(6,6);
-  k.solve(0,0);
-  System.out.print(k.countSolutions(0,0));
-  System.out.println(k);
+  for(int i = 0; i < 5; i++){
+    runTest(i);
+  }
+  KnightBoard c = new KnightBoard(6,10);
+  c.solve(0,1);
+  System.out.println(c);
+
 }
 
 
