@@ -5,7 +5,7 @@ public class KnightBoard{
     else board = new int[startingRows][startingCols];
   }
 
-  public static int[] moves = {1,2,1,-2,-1,2,-1,-2,2,1,2,-1,-2,1,-2,-1};
+  public static int[][] moves = {{1,2}, {2,1}, {2,-1}, {1,-2}, {-1,-2}, {-2,-1}, {-2,1}, {-1,2}};
 
   public String toString(){
     String ans = "";
@@ -25,23 +25,25 @@ public class KnightBoard{
 
       return true;
     }
-    if(row < 0 || col< 0){
-      return false;
+    if (level == 1) {
+                        board[row][col] = level;
+                        return solveH(row, col, level + 1);
     }
 
-    if(row >= board.length || col >= board[0].length)
-    return false;
+    for (int i = 0; i < 8; i++) {
+                        int X = row + moves[i][0];
+                        int Y = col + moves[i][1];
+                        if (checker(X, Y)) {
+                                board[X][Y] = level;
+                                if (solveH(X, Y, level + 1)) {
+                                        return true;
+                                }
+                                board[X][Y] = 0;
+                        }
+                }
+                return false;
+        }
 
-    if(board[row][col] > 0)
-    return false;
-
-    //make sure the move is valid, then move the knight there and continue
-
-
-
-    return ans;
-
-  }
 
   public boolean solve(int row, int col) throws IllegalArgumentException{
     if(row < 0 || col < 0)throw new IllegalArgumentException();
@@ -57,7 +59,6 @@ public class KnightBoard{
     return countH(row, column, 1, 0);
 
 
-
   }
 
   private int countH(int row, int col, int level, int count) {
@@ -67,8 +68,8 @@ public class KnightBoard{
     }
     for(int i = 0; i < moves.length - 1; i+=2){
       //before we move just check all the conditions
-      int r = row + moves[i];
-      int c = col + moves[i+1];
+      int r = row + moves[i][0];
+      int c = col + moves[i][1];
       if(r < 0 || c< 0 || r >= board.length || c > board[0].length || board[r][c] != 0)
         return 0;
       board[r][c] = level;
@@ -81,7 +82,7 @@ public class KnightBoard{
 
 
 private boolean checker(int row, int col) {
-                return ((row >= 0) && (row < rows) && (col >= 0) && (col < cols) && (board[row][col] == 0));
+                return ((row >= 0) && (row < board.length) && (col >= 0) && (col < board[0].length) && (board[row][col] == 0));
         }
 
   public boolean checkBoard(){
