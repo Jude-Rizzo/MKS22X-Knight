@@ -2,6 +2,7 @@ import java.util.*;
 
 public class KnightBoard{
   private int[][] board;
+  int[][] moves;
   int startingRows;
   int startingCols;
   public KnightBoard(int startingRows1,int startingCols1) throws IllegalArgumentException{
@@ -9,9 +10,10 @@ public class KnightBoard{
     startingCols = startingCols1;
     if(startingRows <= 0 || startingCols <=0) throw new IllegalArgumentException();
     else board = new int[startingRows][startingCols];
+
   }
 
-  public static int[][] moves = {{1,2}, {2,1}, {2,-1}, {1,-2}, {-1,-2}, {-2,-1}, {-2,1}, {-1,2}};
+
 
   public String toString(){
     String ans = "";
@@ -77,6 +79,7 @@ class Pieces implements Comparator<piece>{
 }
 
   public boolean solveH(int row, int col, int level){
+
     ArrayList<piece> possibleMoves = new ArrayList<piece>();
     //create a structure of board pieces which each possible move and put them into the array ArrayList
 
@@ -149,9 +152,28 @@ class Pieces implements Comparator<piece>{
 
 
 
-  public boolean solve(int row, int col) throws IllegalArgumentException{
-    if(row < 0 || col < 0)throw new IllegalArgumentException();
-    return solveH(row, col, 1);
+  public boolean solve(int rows, int cols) throws IllegalArgumentException{
+    if(rows < 0 || cols < 0)throw new IllegalArgumentException();
+    moves = new int[startingRows][startingCols];
+    for(int row = 0; row < startingRows; row++){
+      for(int col = 0; col < startingCols; col++){
+        for(int i = -2; i <= 2; i += 4){
+          for(int j = -1; j <= 1; j += 2){
+            if(row + i >= 0 && row + i < startingRows){
+              if(col + j >= 0 && col + j < startingCols){
+                moves[row][col] += 1;
+              }
+            }
+            if(row + j >= 0 && row + j < startingRows){
+              if(col + i >= 0 && col + i < startingCols){
+                moves[row][col] += 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    return solveH(rows, cols, 1);
   }
 
   public int countSolutions(int r, int c) {
