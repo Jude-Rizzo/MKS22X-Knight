@@ -1,6 +1,12 @@
+import java.util.*;
+
 public class KnightBoard{
   private int[][] board;
-  public KnightBoard(int startingRows,int startingCols) throws IllegalArgumentException{
+  int startingRows;
+  int startingCols;
+  public KnightBoard(int startingRows1,int startingCols1) throws IllegalArgumentException{
+    startingRows = startingRows1;
+    startingCols = startingCols1;
     if(startingRows <= 0 || startingCols <=0) throw new IllegalArgumentException();
     else board = new int[startingRows][startingCols];
   }
@@ -68,8 +74,9 @@ class Pieces implements Comparator<piece>{
 	public int compare(piece a, piece b){
 		return a.n - b.n;
 	}
+}
 
-  public boolean solveH(int row, int col, int level, int[][] moves){
+  public boolean solveH(int row, int col, int level){
     ArrayList<piece> possibleMoves = new ArrayList<piece>();
     //create a structure of board pieces which each possible move and put them into the array ArrayList
 
@@ -98,24 +105,47 @@ class Pieces implements Comparator<piece>{
 	for(int i = 0; i < possibleMoves.size(); i++){
     piece t = possibleMoves.get(i);
 		board[t.x][t.y] = level + 1;
+    //make the base case
 		if(level == startingRows * startingCols - 1){
       return true;
     }
-		for(int i = -2; i <= 2; i += 4){
+    //filter through all the possible moves, alter each move uf they
+    //are less than rows and clumns by one
+		for(int n = -2; n <= 2; n += 4){
 			for(int j = -1; j <= 1; j += 2){
-				if(t.x + i >= 0 && t.x + i < startingRows){
+				if(t.x + n >= 0 && t.x + n < startingRows){
 					if(t.y + j >= 0 && t.y + j < startingCols){
-						moves[t.x + i][t.y + j] -= 1;
+						moves[t.x + n][t.y + j] -= 1;
 					}
 				}
 				if(t.x + j >= 0 && t.x + j < startingRows){
-					if(t.y + i >= 0 && t.y + i < startingCols){
-						moves[t.x + j][t.y + i] -= 1;
+					if(t.y + n >= 0 && t.y + n < startingCols){
+						moves[t.x + j][t.y + n] -= 1;
 					}
 				}
 			}
 		}
-  }
+
+  for(int n = -2; n <= 2; n += 4){
+			for(int j = -1; j <= 1; j += 2){
+				if(t.x + n >= 0 && t.x + n < startingRows){
+					if(t.y + j >= 0 && t.y + j < startingCols){
+						moves[t.x + n][t.y + j] += 1;
+					}
+				}
+				if(t.x + j >= 0 && t.x + j < startingRows){
+					if(t.y + n >= 0 && t.y + n < startingCols){
+						moves[t.x + j][t.y + n] += 1;
+					}
+				}
+			}
+		}
+		board[t.x][t.y] = 0;
+	}
+	return false;
+}
+// level is the # of the knight
+
 
 
 
@@ -180,6 +210,35 @@ private boolean checker(int row, int col) {
     }
 
   }
+
+
+  public static void runTest(int i){
+
+    KnightBoard b;
+    int[]m =   {4,5,5,5,5};
+    int[]n =   {4,5,4,5,5};
+    int[]startx = {0,0,0,1,2};
+    int[]starty = {0,0,0,1,2};
+    int[]answers = {0,304,32,56,64};
+    if(i >= 0 ){
+      try{
+        int correct = answers[i];
+        b = new KnightBoard(m[i%m.length],n[i%m.length]);
+
+        int ans  = b.countSolutions(startx[i],starty[i]);
+
+        if(correct==ans){
+          System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
+        }else{
+          System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
+        }
+      }catch(Exception e){
+        System.out.println("FAIL Exception case: "+i);
+
+      }
+    }
+  }
+
 
 
 
