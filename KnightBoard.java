@@ -72,12 +72,13 @@ class Pieces implements Comparator<piece>{
   public boolean solveH(int row, int col, int level, int[][] moves){
     ArrayList<piece> possibleMoves = new ArrayList<piece>();
     //create a structure of board pieces which each possible move and put them into the array ArrayList
-    
+
     for(int i = -2; i <= 2; i += 4){
       for(int j = -1; j <= 1; j += 2){
         if(row + i >= 0 && row + i < startingRows){
           if(col + j >= 0 && col + j < startingCols){
             if(board[row + i][col + j] == 0){
+              //putting every item into an arrayList
               possibleMoves.add(new piece(row + i, col + j, moves[row + i][col + j]));
             }
           }
@@ -91,6 +92,29 @@ class Pieces implements Comparator<piece>{
         }
       }
     }
+
+  //sort the array to prioritize the tours with the least amount of possiblr movrd
+  Collections.sort(possibleMoves, new Pieces());
+	for(int i = 0; i < possibleMoves.size(); i++){
+    piece t = possibleMoves.get(i);
+		board[t.x][t.y] = level + 1;
+		if(level == startingRows * startingCols - 1){
+      return true;
+    }
+		for(int i = -2; i <= 2; i += 4){
+			for(int j = -1; j <= 1; j += 2){
+				if(t.x + i >= 0 && t.x + i < startingRows){
+					if(t.y + j >= 0 && t.y + j < startingCols){
+						moves[t.x + i][t.y + j] -= 1;
+					}
+				}
+				if(t.x + j >= 0 && t.x + j < startingRows){
+					if(t.y + i >= 0 && t.y + i < startingCols){
+						moves[t.x + j][t.y + i] -= 1;
+					}
+				}
+			}
+		}
   }
 
 
