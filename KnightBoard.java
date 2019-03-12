@@ -19,7 +19,7 @@ public class KnightBoard{
   }
 
 
-  private boolean solveH(int row, int col, int level){
+  /*private boolean solveH(int row, int col, int level){
     //level is the move number of the knight
     if(level == board.length * board[0].length + 1){
 
@@ -42,7 +42,27 @@ public class KnightBoard{
                         }
                 }
                 return false;
-        }
+        }*/
+
+
+//NEW OPTIMIZATION
+class piece{
+	int x, y, n;
+
+	public piece(){
+		x = 0;
+		y = 0;
+		n = 0;
+	}
+
+	public piece(int a, int b, int c){
+		x = a;
+    y = b;
+    n = c;
+	}
+}
+
+
 
 
   public boolean solve(int row, int col) throws IllegalArgumentException{
@@ -107,43 +127,10 @@ private boolean checker(int row, int col) {
 
   }
 
-  public static void runTest(int i){
-
-    KnightBoard b;
-    int[]m =   {4,5,5,5,5};
-    int[]n =   {4,5,4,5,5};
-    int[]startx = {0,0,0,1,2};
-    int[]starty = {0,0,0,1,2};
-    int[]answers = {0,304,32,56,64};
-    if(i >= 0 ){
-      try{
-        int correct = answers[i];
-        b = new KnightBoard(m[i%m.length],n[i%m.length]);
-
-        int ans  = b.countSolutions(startx[i],starty[i]);
-
-        if(correct==ans){
-          System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
-        }else{
-          System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
-        }
-      }catch(Exception e){
-        System.out.println("FAIL Exception case: "+i);
-
-      }
-    }
-  }
 
 
-public static void main(String[] args){
-  for(int i = 0; i < 5; i++){
-    runTest(i);
-  }
-  KnightBoard c = new KnightBoard(6,10);
-  c.solve(0,1);
-  System.out.println(c);
 
-}
+
 
 
 }
