@@ -62,10 +62,37 @@ private class piece{
 	}
 }
 
+//Note - Friend helped come up with algorythm on paper but did not share code
+
 class Pieces implements Comparator<piece>{
 	public int compare(piece a, piece b){
 		return a.n - b.n;
 	}
+
+  public boolean solveH(int row, int col, int level, int[][] moves){
+    ArrayList<piece> possibleMoves = new ArrayList<piece>();
+    //create a structure of board pieces which each possible move and put them into the array ArrayList
+    
+    for(int i = -2; i <= 2; i += 4){
+      for(int j = -1; j <= 1; j += 2){
+        if(row + i >= 0 && row + i < startingRows){
+          if(col + j >= 0 && col + j < startingCols){
+            if(board[row + i][col + j] == 0){
+              possibleMoves.add(new piece(row + i, col + j, moves[row + i][col + j]));
+            }
+          }
+        }
+        if(row + j >= 0 && row + j < startingRows){
+          if(col + i >= 0 && col + i < startingCols){
+            if(board[row + j][col + i] == 0){
+              possibleMoves.add(new piece(row + j, col + i, moves[row + j][col + i]));
+            }
+          }
+        }
+      }
+    }
+  }
+
 
 
   public boolean solve(int row, int col) throws IllegalArgumentException{
