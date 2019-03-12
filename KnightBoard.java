@@ -46,7 +46,7 @@ public class KnightBoard{
 
 
 //NEW OPTIMIZATION
-class piece{
+private class piece{
 	int x, y, n;
 
 	public piece(){
@@ -62,7 +62,10 @@ class piece{
 	}
 }
 
-
+class Pieces implements Comparator<piece>{
+	public int compare(piece a, piece b){
+		return a.n - b.n;
+	}
 
 
   public boolean solve(int row, int col) throws IllegalArgumentException{
