@@ -16,19 +16,23 @@ public static void runTest(int i){
 
       if(correct==ans){
         System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
+        System.out.print(b);
       }else{
         System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
+        System.out.print(b);
+        System.out.print("00000");
       }
     }catch(Exception e){
       System.out.println("FAIL Exception case: "+i);
 
     }
+
   }
 }
 
 public static void main(String[] args){
   runTest(4);
-  KnightBoard b = new KnightBoard(15, 15);
+  KnightBoard b = new KnightBoard(16, 16);
   System.out.println(b.solve(0,0));
 }
 

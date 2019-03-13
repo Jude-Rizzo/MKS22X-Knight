@@ -1,5 +1,29 @@
 import java.util.*;
 
+//make your board piece class
+class Piece implements Comparable<Piece>{
+  public int row;
+  public int col;
+  public int moves;
+//r is move number
+  public Piece(int q, int w, int r){
+    row = q;
+    col = w;
+    r = moves;
+  }
+
+  public int compareTo(Piece p){
+    return moves - p.moves;
+  }
+
+  public int compare(Piece p, Piece q){
+    return p.moves - q.moves;
+  }
+
+
+}
+
+
 public class KnightBoard{
   private int[][] board;
   int[][] moves;
@@ -26,6 +50,15 @@ public class KnightBoard{
     }return ans;
   }
 
+  public boolean solve(int startingRow, int startingCol) throws IllegalArgumentException, IllegalStateException
+
+
+
+
+
+
+
+//TIME TO REDO THE WHOLE LAB
 
   /*private boolean solveH(int row, int col, int level){
     //level is the move number of the knight
@@ -53,25 +86,10 @@ public class KnightBoard{
         }*/
 
 
-//NEW OPTIMIZATION
-private class piece{
-	int x, y, n;
 
-	public piece(){
-		x = 0;
-		y = 0;
-		n = 0;
-	}
-
-	public piece(int a, int b, int c){
-		x = a;
-    y = b;
-    n = c;
-	}
-}
 
 //Note - Friend helped come up with algorythm on paper but did not share code
-
+/*
 class Pieces implements Comparator<piece>{
 	public int compare(piece a, piece b){
 		return a.n - b.n;
@@ -154,6 +172,7 @@ class Pieces implements Comparator<piece>{
 
   public boolean solve(int rows, int cols) throws IllegalArgumentException{
     if(rows < 0 || cols < 0)throw new IllegalArgumentException();
+    //initialize the moves array with every possible move in the beginning;
     moves = new int[startingRows][startingCols];
     for(int row = 0; row < startingRows; row++){
       for(int col = 0; col < startingCols; col++){
@@ -173,7 +192,14 @@ class Pieces implements Comparator<piece>{
         }
       }
     }
-    return solveH(rows, cols, 1);
+    //if there is a solution return true
+    if(this.solveH(rows, cols, 1)){
+      board[rows][cols] = 1;
+     return true;
+   }
+   //otherwise undo the board making that you did
+	   board[rows][cols] = 0;
+	   return false;
   }
 
   public int countSolutions(int r, int c) {
@@ -259,7 +285,7 @@ private boolean checker(int row, int col) {
 
       }
     }
-  }
+  } */
 
 
 
