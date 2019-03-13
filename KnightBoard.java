@@ -26,7 +26,7 @@ class Piece implements Comparable<Piece>{
 
 public class KnightBoard{
   private int[][] board;
-  int[][] moves;
+  int[][] Moves = {{1,2}, {-1,2}, {1,-2}, {-1, -2}, {2,1}, {2,-1}, {-2, 1}, {-2,-1}};
   int startingRows;
   int startingCols;
   public KnightBoard(int startingRows1,int startingCols1) throws IllegalArgumentException{
@@ -50,8 +50,29 @@ public class KnightBoard{
     }return ans;
   }
 
-  public boolean solve(int startingRow, int startingCol) throws IllegalArgumentException, IllegalStateException
+  public boolean solve(int startingRow, int startingCol) throws IllegalArgumentException, IllegalStateException{
+    //first check for non0 values
+    for(int i = 0; i < board.length; i++){
+      for(int j = 0; j < board[1].length; j++){
+        if(board[i][j] != 0){
+          throw new IllegalStateException("Board is not cleared");
+        }
+      }
+    }
 
+    //then check for IllegalArguments
+    if(startingRow < 0 || startingCol < 0 || startingRow > startingRows || startingCol < startingCols){
+      throw new IllegalArgumentException("inputs are off");
+    }
+
+    return solveH(startingRow, startingCol, 1);
+  }
+
+
+  public boolean solveH(int row, int col, int level){
+  return false;
+
+  }
 
 
 
