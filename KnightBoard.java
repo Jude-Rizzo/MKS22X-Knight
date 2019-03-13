@@ -64,12 +64,31 @@ public class KnightBoard{
     if(startingRow < 0 || startingCol < 0 || startingRow > startingRows || startingCol < startingCols){
       throw new IllegalArgumentException("inputs are off");
     }
+    //now make the arrayList of all the boardSquares and all the possible moves
 
+    ArrayList<Piece> posMoves = new ArrayList<Piece>();
+    //for loop through the board, and test out all possible knightmoves
+    for(int i = 0; i < board.length; i++){
+      for(int j = 0; j < board[1].length; j++){
+        int mcounter = 0;
+        for(int k = 0; k < 8; k++){
+          //see if anything is out of bounds, start off with rows
+          //the js are the columns
+          if(!(i + Moves[k][0] < 0 || i + Moves[k][0] > startingRows
+          || j + Moves[k][1] < 0 || j + Moves[k][1] > startingCols)) mcounter +=1;
+        }
+        //make a new piece for the poind and put it ib the row
+        Piece p = new Piece(startingRow, startingCol, mcounter);
+        posMoves.add(p);
+      }
+    }
+    Collections.sort(posMoves);
     return solveH(startingRow, startingCol, 1);
   }
 
 
   public boolean solveH(int row, int col, int level){
+  //Now -> 
   return false;
 
   }
