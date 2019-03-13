@@ -51,6 +51,15 @@ public class KnightBoard{
     }return ans;
   }
 
+  public boolean clear(){
+    for(int i = 0; i < board.length; i++){
+      for(int j = 0; j < board[i].length; j++){
+          board[i][j] = 0;
+        }
+    }
+
+  }
+
   public boolean solve(int startingRow, int startingCol) throws IllegalArgumentException, IllegalStateException{
     //first check for non0 values
     for(int i = 0; i < board.length; i++){
@@ -88,10 +97,37 @@ public class KnightBoard{
 
 
   public boolean solveH(int row, int col, int level, Piece[][] posMoves){
-  //Now -> starting at this point, loop through all the possible moves, checking to see which one has
-  for(int i = 0; i < 8; i++){
-
+  //If level is the total area, return true and finish the solution
+  if(level == board.length * board[1].length){
+    return true;
   }
+  ArrayList<Piece> options = new ArrayList<Piece>();
+  //else were going to look at all the possible moves and put them into an arrayList
+  for(int i = 0; i < 8; i++){
+    //make sure its a valid move
+    if(row + moves[i][0] >= 0 &&
+       row + moves[i][0] <= startingRows &&
+       col + moves[i][1] >= 0 &&
+       col + moves[i][1] <= startingCols &&
+       board[row + moves[i][0]][col+moves[i][1]] == 0
+       ){
+         //if it is, add it to the ArrayList of options to move to
+
+         options.add(posMoves[row + moves[i][0]][col+moves[i][1]]]);
+       }
+  }
+  //now sort options from moves least to greatest
+  Collections.sort(options);
+  //
+  if(options.size() > 0){
+
+    //if there are remaining options, set this value equal to the level and move on
+    for(int i = 0; i < options.size(); i++){
+      Piece next = options.get(i);
+      return solveH(next.row, next.col, level + 1, posMoves);
+    }
+  }
+  //add one to the possible moves
   return false;
 
   }
