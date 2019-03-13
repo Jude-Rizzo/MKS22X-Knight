@@ -9,7 +9,7 @@ class Piece implements Comparable<Piece>{
   public Piece(int q, int w, int r){
     row = q;
     col = w;
-    r = moves;
+    moves = r;
   }
 
   public int compareTo(Piece p){
@@ -26,9 +26,10 @@ class Piece implements Comparable<Piece>{
 
 public class KnightBoard{
   private int[][] board;
-  int[][] Moves = {{1,2}, {-1,2}, {1,-2}, {-1, -2}, {2,1}, {2,-1}, {-2, 1}, {-2,-1}};
-  int startingRows;
-  int startingCols;
+  public int[][] Moves = {{1,2}, {-1,2}, {1,-2}, {-1, -2}, {2,1}, {2,-1}, {-2, 1}, {-2,-1}};
+  public int startingRows;
+  public int startingCols;
+  public Piece[][] posMoves;
   public KnightBoard(int startingRows1,int startingCols1) throws IllegalArgumentException{
     startingRows = startingRows1;
     startingCols = startingCols1;
@@ -53,7 +54,7 @@ public class KnightBoard{
   public boolean solve(int startingRow, int startingCol) throws IllegalArgumentException, IllegalStateException{
     //first check for non0 values
     for(int i = 0; i < board.length; i++){
-      for(int j = 0; j < board[1].length; j++){
+      for(int j = 0; j < board[i].length; j++){
         if(board[i][j] != 0){
           throw new IllegalStateException("Board is not cleared");
         }
@@ -61,34 +62,36 @@ public class KnightBoard{
     }
 
     //then check for IllegalArguments
-    if(startingRow < 0 || startingCol < 0 || startingRow > startingRows || startingCol < startingCols){
+    if(startingRow < 0 || startingCol < 0 || startingRow > startingRows || startingCol > startingCols){
       throw new IllegalArgumentException("inputs are off");
     }
     //now make the arrayList of all the boardSquares and all the possible moves
 
-    ArrayList<Piece> posMoves = new ArrayList<Piece>();
+    posMoves = new Piece[startingRows][startingCols];
     //for loop through the board, and test out all possible knightmoves
     for(int i = 0; i < board.length; i++){
-      for(int j = 0; j < board[1].length; j++){
+      for(int j = 0; j < board[i].length; j++){
         int mcounter = 0;
         for(int k = 0; k < 8; k++){
           //see if anything is out of bounds, start off with rows
           //the js are the columns
-          if(!(i + Moves[k][0] < 0 || i + Moves[k][0] > startingRows
-          || j + Moves[k][1] < 0 || j + Moves[k][1] > startingCols)) mcounter +=1;
+          if(!(i + Moves[k][0] < 0 || i + Moves[k][0] >= startingRows
+          || j + Moves[k][1] < 0 || j + Moves[k][1] >= startingCols)) mcounter +=1;
         }
         //make a new piece for the poind and put it ib the row
         Piece p = new Piece(startingRow, startingCol, mcounter);
-        posMoves.add(p);
+        posMoves[i][j] = p;
       }
     }
-    Collections.sort(posMoves);
-    return solveH(startingRow, startingCol, 1);
+    return solveH(startingRow, startingCol, 1, posMoves);
   }
 
 
-  public boolean solveH(int row, int col, int level){
-  //Now -> 
+  public boolean solveH(int row, int col, int level, Piece[][] posMoves){
+  //Now -> starting at this point, loop through all the possible moves, checking to see which one has
+  for(int i = 0; i < 8; i++){
+
+  }
   return false;
 
   }
