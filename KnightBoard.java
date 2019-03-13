@@ -20,14 +20,18 @@ class Piece implements Comparable<Piece>{
     return p.moves - q.moves;
   }
 
-  
+  public String toString(){
+    String ans = "";
+    ans = ans + "Row: " + row + " Col: " + col;
+    return ans;
+  }
 
 
 }
 
 
 public class KnightBoard{
-  private int[][] board;
+  public int[][] board;
   public int[][] Moves = {{1,2}, {-1,2}, {1,-2}, {-1, -2}, {2,1}, {2,-1}, {-2, 1}, {-2,-1}};
   public int startingRows;
   public int startingCols;
@@ -39,6 +43,18 @@ public class KnightBoard{
     else board = new int[startingRows][startingCols];
 
   }
+
+  public static String printPiece1(Piece[][] l){
+    String ans = "";
+    for(int i = 0; i < l.length; i++){
+      ans += "\n";
+      for(int j = 0; j < l[i].length; j++){
+        ans+= l[i][j].moves + " ";
+      }
+
+  }
+  return ans;
+}
 
 
 
@@ -90,8 +106,11 @@ public class KnightBoard{
           || j + Moves[k][1] < 0 || j + Moves[k][1] >= startingCols)) mcounter +=1;
         }
         //make a new piece for the poind and put it ib the row
-        Piece p = new Piece(startingRow, startingCol, mcounter);
+        Piece p = new Piece(i, j, mcounter);
         posMoves[i][j] = p;
+        System.out.println(p);
+        //System.out.println(printPiece1(posMoves));
+
       }
     }
     return solveH(startingRow, startingCol, 1, posMoves);
@@ -109,27 +128,31 @@ public class KnightBoard{
   //else were going to look at all the possible moves and put them into an arrayList
   for(int i = 0; i < 8; i++){
     //make sure its a valid move
+    //System.out.println(Moves[i][1]);
     if(row + Moves[i][0] >= 0 &&
-       row + Moves[i][0] <= startingRows &&
+       row + Moves[i][0] < startingRows &&
        col + Moves[i][1] >= 0 &&
-       col + Moves[i][1] <= startingCols &&
+       col + Moves[i][1] < startingCols &&
        board[row + Moves[i][0]][col+Moves[i][1]] == 0
        ){
          //if it is, add it to the ArrayList of options to move to
+         //System.out.println(posMoves[row + Moves[i][0]][col+Moves[i][1]]);
 
          options.add(posMoves[row + Moves[i][0]][col+Moves[i][1]]);
          //System.out.println("Moves");
          //System.out.println(row + Moves[i][0]);
         // System.out.println(col+Moves[i][1]);
 
-        System.out.println(posMoves[row + Moves[i][0]][col+Moves[i][1]].row);
+
        }
   }
+  //System.out.println(printPiece(posMoves));
   //now sort options from moves least to greatest
   Collections.sort(options);
   ////////////////////////////
   if(options.size() > 0){
     for(int i = 0; i < options.size(); i++){
+      //System.out.println(options.get(i));
       //in options removing all the possible moves from the amount of possibilities --> ADD THEM BACK IF FALSE
       options.get(i).moves --;
     }

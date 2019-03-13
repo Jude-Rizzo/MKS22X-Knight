@@ -18,7 +18,7 @@ public class Dev{
   public static void main(String[] a){
   KnightBoard b = new KnightBoard(5,5);
   b.solve(0,0);
-  System.out.println(printPiece(b));
+  //System.out.println(printPiece(b));
   //ArrayList of Pieces works
   System.out.print(b.toString());
 }
