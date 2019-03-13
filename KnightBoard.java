@@ -20,6 +20,8 @@ class Piece implements Comparable<Piece>{
     return p.moves - q.moves;
   }
 
+  
+
 
 }
 
@@ -57,7 +59,7 @@ public class KnightBoard{
           board[i][j] = 0;
         }
     }
-
+    return true;
   }
 
   public boolean solve(int startingRow, int startingCol) throws IllegalArgumentException, IllegalStateException{
@@ -97,37 +99,65 @@ public class KnightBoard{
 
 
   public boolean solveH(int row, int col, int level, Piece[][] posMoves){
+
   //If level is the total area, return true and finish the solution
   if(level == board.length * board[1].length){
+    board[row][col] = level;
     return true;
   }
   ArrayList<Piece> options = new ArrayList<Piece>();
   //else were going to look at all the possible moves and put them into an arrayList
   for(int i = 0; i < 8; i++){
     //make sure its a valid move
-    if(row + moves[i][0] >= 0 &&
-       row + moves[i][0] <= startingRows &&
-       col + moves[i][1] >= 0 &&
-       col + moves[i][1] <= startingCols &&
-       board[row + moves[i][0]][col+moves[i][1]] == 0
+    if(row + Moves[i][0] >= 0 &&
+       row + Moves[i][0] <= startingRows &&
+       col + Moves[i][1] >= 0 &&
+       col + Moves[i][1] <= startingCols &&
+       board[row + Moves[i][0]][col+Moves[i][1]] == 0
        ){
          //if it is, add it to the ArrayList of options to move to
 
-         options.add(posMoves[row + moves[i][0]][col+moves[i][1]]]);
+         options.add(posMoves[row + Moves[i][0]][col+Moves[i][1]]);
+         //System.out.println("Moves");
+         //System.out.println(row + Moves[i][0]);
+        // System.out.println(col+Moves[i][1]);
+
+        System.out.println(posMoves[row + Moves[i][0]][col+Moves[i][1]].row);
        }
   }
   //now sort options from moves least to greatest
   Collections.sort(options);
-  //
+  ////////////////////////////
   if(options.size() > 0){
-
+    for(int i = 0; i < options.size(); i++){
+      //in options removing all the possible moves from the amount of possibilities --> ADD THEM BACK IF FALSE
+      options.get(i).moves --;
+    }
+    //now add the level
+    //System.out.println("row:"  + row);
+    //System.out.println("col:"  + col);
+    //System.out.println(level);
+    board[row][col] = level;
     //if there are remaining options, set this value equal to the level and move on
     for(int i = 0; i < options.size(); i++){
       Piece next = options.get(i);
-      return solveH(next.row, next.col, level + 1, posMoves);
+      //System.out.println(next.row);
+      if(solveH(next.row, next.col, level + 1, posMoves)){
+
+        return true;
+
+      }
     }
   }
+  //now, if we got a false then function is still alive, go back into options if size > 0 and give the possible move back
   //add one to the possible moves
+  if(options.size() > 0){
+    for(int i = 0; i < options.size(); i++){
+      //in options removing all the possible moves from the amount of possibilities --> ADD THEM BACK IF FALSE
+      options.get(i).moves ++;
+    }
+  }
+  board[row][col] = 0;
   return false;
 
   }
