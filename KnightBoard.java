@@ -116,7 +116,7 @@ public String toString(){
         //make a new piece for the poind and put it ib the row
         Piece p = new Piece(i, j, mcounter);
         posMoves[i][j] = p;
-        System.out.println(p);
+        //System.out.println(p);
         //System.out.println(printPiece1(posMoves));
 
       }
@@ -193,7 +193,17 @@ public String toString(){
 
   }
   public int countSolutions(int r, int c) {
-                //make board valied
+    for(int i = 0; i < startingRows; i++){
+      for(int j = 0; j < startingCols; j++){
+        if(board[i][j] != 0){
+         throw new IllegalStateException("Board contains non-zero values.");
+       }
+        if(startingRow < 0 || startingRow >= startingRows ||
+        startingCol < 0 || startingCol >= startingCols){
+          throw new IllegalArgumentException("Parameter out of bounds.");
+        }
+      }
+    }
                 clear();
                 return countH(r, c, 1);
         }
@@ -220,6 +230,7 @@ public String toString(){
                                 board[r][c] = 0;
                         }
                 }
+                clear();
                 return count;
         }
 
