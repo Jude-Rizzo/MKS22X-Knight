@@ -58,16 +58,24 @@ public class KnightBoard{
 
 
 
-  public String toString(){
-    String ans = "";
-    for(int i = 0; i < board.length; i++){
-      ans += "\n";
-      for(int j = 0; j < board[0].length; j++){
-        if(board[i][j]<10)ans += "_"+board[i][j] + "  ";
-        else ans+=board[i][j] + "  ";
+public String toString(){
+  String output = "";
+  for (int r = 0; r < board.length; r++){
+    for (int c = 0; c < board[r].length;c++){
+      if (board[r][c] == 0){
+        output += " _ ";
       }
-    }return ans;
+      else if (board[r][c] < 10){
+        output += " " + board[r][c] + " ";
+      }
+      else{
+        output += board[r][c] + " ";
+      }
+    }
+    output += "\n";
   }
+  return output;
+}
 
   public boolean clear(){
     for(int i = 0; i < board.length; i++){
@@ -184,155 +192,52 @@ public class KnightBoard{
   return false;
 
   }
+  public int countSolutions(int r, int c) {
+                //make board valied
+                clear();
+                return countH(r, c, 1);
+        }
 
+        private int countH(int row, int col, int level) {
+                int count = 0;
 
-
-
-
-
-//TIME TO REDO THE WHOLE LAB
-
-  /*private boolean solveH(int row, int col, int level){
-    //level is the move number of the knight
-    if(level == board.length * board[0].length + 1){
-
-      return true;
-    }
-    if (level == 1) {
+              //checks last one
+                if (level == board.length * board[0].length + 1) {
+                        count++;
+                }
+                //start off the count
+                if (level == 1) {
                         board[row][col] = level;
-                        return solveH(row, col, level + 1);
-    }
-
-    for (int i = 0; i < 8; i++) {
-                        int X = row + moves[i][0];
-                        int Y = col + moves[i][1];
-                        if (checker(X, Y)) {
-                                board[X][Y] = level;
-                                if (solveH(X, Y, level + 1)) {
-                                        return true;
-                                }
-                                board[X][Y] = 0;
+                        return countH(row, col, level + 1);
+                }
+                //do all possible moves, add them all together
+                for (int i = 0; i < 8; i++) {
+                        int r = row + Moves[i][0];
+                        int c = col + Moves[i][1];
+                        if (checker(r, c)) {
+                                board[r][c] = level;
+                                count += countH(r, c, level + 1);
+                                board[r][c] = 0;
                         }
                 }
-                return false;
-        }*/
+                return count;
+        }
+
+        private boolean checker(int row, int col) {
+                        return ((row >= 0) && (row < board.length) && (col >= 0) && (col < board[0].length) && (board[row][col] == 0));
+                }
 
 
 
 
-//Note - Friend helped come up with algorythm on paper but did not share code
+
+
+
 /*
-class Pieces implements Comparator<piece>{
-	public int compare(piece a, piece b){
-		return a.n - b.n;
-	}
-}
-
-  public boolean solveH(int row, int col, int level){
-
-    ArrayList<piece> possibleMoves = new ArrayList<piece>();
-    //create a structure of board pieces which each possible move and put them into the array ArrayList
-
-    for(int i = -2; i <= 2; i += 4){
-      for(int j = -1; j <= 1; j += 2){
-        if(row + i >= 0 && row + i < startingRows){
-          if(col + j >= 0 && col + j < startingCols){
-            if(board[row + i][col + j] == 0){
-              //putting every item into an arrayList
-              possibleMoves.add(new piece(row + i, col + j, moves[row + i][col + j]));
-            }
-          }
-        }
-        if(row + j >= 0 && row + j < startingRows){
-          if(col + i >= 0 && col + i < startingCols){
-            if(board[row + j][col + i] == 0){
-              possibleMoves.add(new piece(row + j, col + i, moves[row + j][col + i]));
-            }
-          }
-        }
-      }
-    }
-
-  //sort the array to prioritize the tours with the least amount of possiblr movrd
-  Collections.sort(possibleMoves, new Pieces());
-	for(int i = 0; i < possibleMoves.size(); i++){
-    piece t = possibleMoves.get(i);
-		board[t.x][t.y] = level + 1;
-    //make the base case
-		if(level == startingRows * startingCols - 1){
-      return true;
-    }
-    //filter through all the possible moves, alter each move uf they
-    //are less than rows and clumns by one
-		for(int n = -2; n <= 2; n += 4){
-			for(int j = -1; j <= 1; j += 2){
-				if(t.x + n >= 0 && t.x + n < startingRows){
-					if(t.y + j >= 0 && t.y + j < startingCols){
-						moves[t.x + n][t.y + j] -= 1;
-					}
-				}
-				if(t.x + j >= 0 && t.x + j < startingRows){
-					if(t.y + n >= 0 && t.y + n < startingCols){
-						moves[t.x + j][t.y + n] -= 1;
-					}
-				}
-			}
-		}
-
-  for(int n = -2; n <= 2; n += 4){
-			for(int j = -1; j <= 1; j += 2){
-				if(t.x + n >= 0 && t.x + n < startingRows){
-					if(t.y + j >= 0 && t.y + j < startingCols){
-						moves[t.x + n][t.y + j] += 1;
-					}
-				}
-				if(t.x + j >= 0 && t.x + j < startingRows){
-					if(t.y + n >= 0 && t.y + n < startingCols){
-						moves[t.x + j][t.y + n] += 1;
-					}
-				}
-			}
-		}
-		board[t.x][t.y] = 0;
-	}
-	return false;
-}
-// level is the # of the knight
 
 
 
 
-  public boolean solve(int rows, int cols) throws IllegalArgumentException{
-    if(rows < 0 || cols < 0)throw new IllegalArgumentException();
-    //initialize the moves array with every possible move in the beginning;
-    moves = new int[startingRows][startingCols];
-    for(int row = 0; row < startingRows; row++){
-      for(int col = 0; col < startingCols; col++){
-        for(int i = -2; i <= 2; i += 4){
-          for(int j = -1; j <= 1; j += 2){
-            if(row + i >= 0 && row + i < startingRows){
-              if(col + j >= 0 && col + j < startingCols){
-                moves[row][col] += 1;
-              }
-            }
-            if(row + j >= 0 && row + j < startingRows){
-              if(col + i >= 0 && col + i < startingCols){
-                moves[row][col] += 1;
-              }
-            }
-          }
-        }
-      }
-    }
-    //if there is a solution return true
-    if(this.solveH(rows, cols, 1)){
-      board[rows][cols] = 1;
-     return true;
-   }
-   //otherwise undo the board making that you did
-	   board[rows][cols] = 0;
-	   return false;
-  }
 
   public int countSolutions(int r, int c) {
                 //make board valied
