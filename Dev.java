@@ -19,6 +19,7 @@ public class Dev{
   KnightBoard b = new KnightBoard(5,5);
   b.solve(0,0);
   System.out.print(b.toString());
+  b.clear();
   System.out.println(b.countSolutions(0,0));
   //System.out.println(printPiece(b));
   //ArrayList of Pieces works

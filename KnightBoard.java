@@ -193,13 +193,13 @@ public String toString(){
 
   }
   public int countSolutions(int r, int c) {
-    for(int i = 0; i < startingRows; i++){
-      for(int j = 0; j < startingCols; j++){
+    for(int i = r; i < startingRows; i++){
+      for(int j = c; j < startingCols; j++){
         if(board[i][j] != 0){
          throw new IllegalStateException("Board contains non-zero values.");
        }
-        if(startingRow < 0 || startingRow >= startingRows ||
-        startingCol < 0 || startingCol >= startingCols){
+        if(r < 0 || r >= startingRows ||
+        c < 0 || c >= startingCols){
           throw new IllegalArgumentException("Parameter out of bounds.");
         }
       }
@@ -209,29 +209,19 @@ public String toString(){
         }
 
         private int countH(int row, int col, int level) {
-                int count = 0;
-
-              //checks last one
-                if (level == board.length * board[0].length + 1) {
-                        count++;
+              if(level == board.length * board[0].length){
+                return 1;
+              }
+              int total = 0;
+              board[row][col] = level;
+              //loop through ALL MOVES
+              for(int i = 0; i < 8; i++){
+                if(checker((row + Moves[i][0]), (col + Moves[i][1]))){
+                  total += countH(row + Moves[i][0], col + Moves[i][1], level +1);
                 }
-                //start off the count
-                if (level == 1) {
-                        board[row][col] = level;
-                        return countH(row, col, level + 1);
-                }
-                //do all possible moves, add them all together
-                for (int i = 0; i < 8; i++) {
-                        int r = row + Moves[i][0];
-                        int c = col + Moves[i][1];
-                        if (checker(r, c)) {
-                                board[r][c] = level;
-                                count += countH(r, c, level + 1);
-                                board[r][c] = 0;
-                        }
-                }
-                clear();
-                return count;
+              }
+              board[row][col] = 0;
+              return total;
         }
 
         private boolean checker(int row, int col) {
